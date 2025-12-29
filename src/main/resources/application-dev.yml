@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/edu
+    username: edu
+    password: edu
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
