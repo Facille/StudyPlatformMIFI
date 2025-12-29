@@ -1,51 +1,90 @@
-🎓 Edu Platform — система онлайн-обучения
+📘 EduPlatform — учебная платформа (Spring Boot)
 
-Backend-приложение для управления онлайн-курсами, заданиями и тестированием студентов.
-Реализовано на Spring Boot + JPA (Hibernate) с использованием PostgreSQL и Docker.
+Учебный проект, реализующий платформу для онлайн-обучения.
+Система поддерживает курсы, пользователей, задания, тесты и прохождение обучения.
 
-Проект демонстрирует работу с:
+Проект разработан с использованием Spring Boot + JPA (Hibernate) + PostgreSQL, с поддержкой Docker и интеграционных тестов.
 
-сложной объектной моделью,
+🧩 Архитектура проекта
 
-связями между сущностями (1–1, 1–M, M–M),
+Проект построен по классической многослойной архитектуре:
 
-REST API,
+Controller → Service → Repository → Database
 
-транзакциями и бизнес-логикой,
+Основные слои:
 
-интеграционными тестами.
+controller — REST API (точки входа)
 
-🧱 Архитектура проекта
-Слои приложения
-controller   – REST API
-service      – бизнес-логика
-repository   – доступ к данным (Spring Data JPA)
-entity       – JPA-сущности
-dto          – DTO (request / response)
-exception    – централизованная обработка ошибок
+service — бизнес-логика
 
-📦 Основные сущности
-Пользователи и роли
+repository — доступ к данным (Spring Data JPA)
+
+entity — JPA-сущности
+
+dto — DTO для запросов и ответов
+
+exception — обработка ошибок
+
+config / resources — конфигурация приложения
+
+🧠 Используемые технологии
+
+Java 17
+
+Spring Boot 3.x
+
+Spring Data JPA (Hibernate)
+
+PostgreSQL
+
+Maven
+
+Docker / Docker Compose
+
+JUnit (интеграционные тесты)
+
+📦 Структура проекта
+
+edu-platform/
+│
+├── src/
+│   ├── main/
+│   │   ├── java/com/example/eduplatform/
+│   │   │   ├── controller/        # REST контроллеры
+│   │   │   ├── service/           # Бизнес-логика
+│   │   │   ├── repository/        # JPA репозитории
+│   │   │   ├── entity/            # JPA сущности
+│   │   │   ├── dto/               # DTO объекты
+│   │   │   ├── exception/         # Кастомные исключения
+│   │   │   └── EduPlatformApplication.java
+│   │   │
+│   │   └── resources/
+│   │       ├── application.yml
+│   │       ├── application-dev.yml
+│   │       └── application-test.yml
+│   │
+│   └── test/
+│       └── java/com/example/eduplatform/
+│           └── (интеграционные тесты)
+│
+├── docker-compose.yml
+├── Dockerfile
+├── pom.xml
+└── README.md
+
+📚 Основные сущности (Entity)
 
 User
-
-Role
-
-Курсы и обучение
 
 Course
 
 Category
 
+Enrollment
+
 CourseModule
 
 Lesson
-
-Enrollment
-
-EnrollmentStatus
-
-Задания и тестирование
 
 Assignment
 
@@ -59,35 +98,12 @@ AnswerOption
 
 QuizSubmission
 
-QuestionType
+Role
 
-Все связи реализованы через JPA-аннотации (@OneToMany, @ManyToOne, @ManyToMany)
-По умолчанию используется LAZY загрузка.
+Связи реализованы через @OneToMany, @ManyToOne, @ManyToMany с ленивой загрузкой (LAZY).
 
-⚙️ Используемые технологии
-
-Java 17
-
-Spring Boot 3
-
-Spring Data JPA (Hibernate)
-
-PostgreSQL
-
-Docker / Docker Compose
-
-JUnit 5
-
-Maven
-
-🗄️ База данных
-
-Используется PostgreSQL.
-Схема создаётся автоматически при запуске приложения.
-
-Подключение настраивается через application.yml и переменные окружения.
-
-🌍 Переменные окружения
+⚙️ Конфигурация
+Переменные окружения (пример)
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=edu_platform
@@ -97,36 +113,31 @@ DB_PASSWORD=postgres
 SPRING_PROFILES_ACTIVE=dev
 
 🚀 Запуск проекта
-🔹 Локально (через Maven)
-mvn clean spring-boot:run
+🔹 Локально (без Docker)
+mvn clean install
+mvn spring-boot:run
+
+
+Приложение будет доступно по адресу:
+
+http://localhost:8080
 
 🔹 Через Docker
 docker-compose up --build
 
 
-После запуска приложение доступно по адресу:
+После запуска:
 
 http://localhost:8080
 
-🧪 Postman
-
-Для тестирования API можно использовать Postman.
-
-В проекте реализованы интеграционные тесты:
-
-создание сущностей
-
-проверка связей
-
-проверка бизнес-логики (enroll, submit, validation)
-
-проверка ошибок
-
-Запуск тестов:
-
+🧪 Тестирование
+Запуск всех тестов:
 mvn test
 
-🔗 REST API
+С использованием профиля test:
+mvn test -P test
+
+🔌 REST API (основные эндпоинты)
 Пользователи
 GET    /api/users
 GET    /api/users/{id}
@@ -142,72 +153,31 @@ PUT    /api/courses/{id}
 DELETE /api/courses/{id}
 
 Запись на курс
-POST   /api/enrollments/enroll?studentId={id}&courseId={id}
-POST   /api/enrollments/unenroll?studentId={id}&courseId={id}
-GET    /api/enrollments
+POST   /api/enrollments/enroll?studentId=&courseId=
+POST   /api/enrollments/unenroll?studentId=&courseId=
 
-Модули
-GET    /api/modules
-POST   /api/modules
-PUT    /api/modules/{id}
-DELETE /api/modules/{id}
+Модули и уроки
+GET /api/modules
+GET /api/lessons
 
-Уроки
-GET    /api/lessons
-POST   /api/lessons
-PUT    /api/lessons/{id}
-DELETE /api/lessons/{id}
-
-Задания
-GET    /api/assignments
-POST   /api/assignments
-PUT    /api/assignments/{id}
-DELETE /api/assignments/{id}
-
-Решения заданий
-GET    /api/submissions
-GET    /api/submissions/student/{studentId}
-GET    /api/submissions/assignment/{assignmentId}
-POST   /api/submissions/submit
+Задания и отправки
+GET  /api/assignments
+POST /api/submissions/submit
 
 Тесты
-GET    /api/quizzes
-GET    /api/quizzes/{id}
-POST   /api/quizzes
-PUT    /api/quizzes/{id}
-DELETE /api/quizzes/{id}
+GET  /api/quizzes
+POST /api/quizzes/{id}/take
 
-Прохождение тестов
-POST /api/quiz-submissions/submit?quizId={id}&studentId={id}
-GET  /api/quiz-submissions/student/{studentId}
-GET  /api/quiz-submissions/course/{courseId}
+🧪 Интеграционные тесты
 
-🧩 Обработка ошибок
+Проект содержит интеграционные тесты, проверяющие:
 
-Используется глобальный @RestControllerAdvice:
+создание сущностей
 
-BadRequestException
+связи между ними
 
-NotFoundException
+корректность CRUD операций
 
-MethodArgumentNotValidException
+работу бизнес-логики
 
-INTERNAL_ERROR
-
-Все ошибки возвращаются в формате:
-
-{
-  "status": 400,
-  "error": "VALIDATION_ERROR",
-  "message": "Validation failed",
-  "path": "/api/...",
-  "timestamp": "2025-01-01T12:00:00Z",
-  "errors": {
-    "field": "message"
-  }
-}
-
-
-Quizzes
-
-(по аналогии с эндпоинтами выше)
+Тесты используют отдельный профиль и не влияют на основную БД.
