@@ -7,5 +7,5 @@ import java.util.Map;
 public record TakeQuizRequest(
         @NotNull Long studentId,
         @NotNull Long quizId,
-        @NotNull Map<Long, Long> answers // questionId -> selectedOptionId
+        @NotNull Map<Long, Long> answers
 ) {}

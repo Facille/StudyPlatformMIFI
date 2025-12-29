@@ -96,7 +96,6 @@ public class QuizService {
             AnswerOption selected = answerOptionRepository.findById(selectedOptionId)
                     .orElseThrow(() -> new BadRequestException("Selected option not found: " + selectedOptionId));
 
-            // защита от "подсунули option от другого вопроса"
             if (!selected.getQuestion().getId().equals(q.getId())) {
                 throw new BadRequestException("Option does not belong to question: " + q.getId());
             }

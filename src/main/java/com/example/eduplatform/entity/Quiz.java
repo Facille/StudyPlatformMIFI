@@ -20,7 +20,7 @@ public class Quiz {
     @Column(nullable = false)
     private String title;
 
-    private Integer timeLimit; // минуты, опционально
+    private Integer timeLimit;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "module_id", nullable = false, unique = true)

@@ -24,7 +24,7 @@ public class Course {
     @Column(columnDefinition = "text")
     private String description;
 
-    private String duration; // например "6 weeks"
+    private String duration;
 
     private LocalDate startDate;
 
@@ -32,7 +32,6 @@ public class Course {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    // teacher = User с ролью TEACHER (проверим в сервисе позже)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "teacher_id", nullable = false)
     private User teacher;

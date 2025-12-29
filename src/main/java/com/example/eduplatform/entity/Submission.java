@@ -36,6 +36,6 @@ public class Submission {
     @Column(columnDefinition = "text", nullable = false)
     private String content;
 
-    private Integer score;     // может быть null до проверки
-    private String feedback;   // комментарий преподавателя
+    private Integer score;
+    private String feedback;
 }

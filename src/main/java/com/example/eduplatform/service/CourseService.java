@@ -62,7 +62,7 @@ public class CourseService {
                 .title(req.title())
                 .content(req.content())
                 .videoUrl(req.videoUrl())
-                .courseModule(module) // поле должно называться courseModule
+                .courseModule(module)
                 .build();
 
         return toLessonResponse(lessonRepository.save(lesson));
@@ -73,7 +73,7 @@ public class CourseService {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new NotFoundException("Course not found: " + courseId));
 
-        // мы в транзакции — можно безопасно трогать lazy коллекции
+
         return toCourseResponse(course);
     }
 
@@ -106,7 +106,7 @@ public class CourseService {
             course.setTeacher(teacher);
         }
 
-        return toCourseResponse(course); // course уже managed в транзакции
+        return toCourseResponse(course);
     }
 
     @Transactional
@@ -114,7 +114,7 @@ public class CourseService {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new NotFoundException("Course not found: " + courseId));
 
-        // Вариант "безопаснее для оценивания": запрещать удаление, если есть модули/уроки
+
         if (!course.getCourseModules().isEmpty()) {
             throw new com.example.eduplatform.exception.BadRequestException(
                     "Cannot delete course with modules. Delete modules first."

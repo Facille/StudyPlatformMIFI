@@ -55,7 +55,6 @@ public class EnrollmentService {
                 .orElseThrow(() -> new NotFoundException("Enrollment not found for student " + studentId + " and course " + courseId));
 
         enrollment.setStatus(EnrollmentStatus.CANCELLED);
-        // save не обязателен: транзакция + managed entity, но можно явно:
         enrollmentRepository.save(enrollment);
     }
 
@@ -82,7 +81,6 @@ public class EnrollmentService {
         // вариант 1: удаляем запись
         enrollmentRepository.delete(e);
 
-        // вариант 2 (если хочешь историю): e.setStatus(EnrollmentStatus.CANCELLED);
     }
 
     @Transactional
